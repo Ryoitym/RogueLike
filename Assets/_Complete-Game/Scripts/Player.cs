@@ -10,9 +10,13 @@ namespace Completed
 	{
 		public float restartLevelDelay = 1f;		//Delay time in seconds to restart level.
 		public int pointsPerFood = 10;				//Number of points to add to player food points when picking up a food object.
-		public int pointsPerSoda = 20;				//Number of points to add to player food points when picking up a soda object.
+		public int pointsPerSoda = 10;				//Number of points to add to player water points when picking up a soda object.
 		public int wallDamage = 1;					//How much damage a player does to a wall when chopping it.
 		public Text foodText;						//UI Text to display current player food total.
+
+        //新規
+        public Text waterText;
+
 		public AudioClip moveSound1;				//1 of 2 Audio clips to play when player moves.
 		public AudioClip moveSound2;				//2 of 2 Audio clips to play when player moves.
 		public AudioClip eatSound1;					//1 of 2 Audio clips to play when player collects a food object.
@@ -23,6 +27,9 @@ namespace Completed
 		
 		private Animator animator;					//Used to store a reference to the Player's animator component.
 		private int food;                           //Used to store player food points total during level.
+
+        private int water;
+
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
         private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.
 #endif
@@ -36,9 +43,13 @@ namespace Completed
 			
 			//Get the current food point total stored in GameManager.instance between levels.
 			food = GameManager.instance.playerFoodPoints;
+
+            water = GameManager.instance.playerWaterPoints;
 			
 			//Set the foodText to reflect the current player food total.
 			foodText.text = "Food: " + food;
+
+            waterText.text = "Water:" + water;
 			
 			//Call the Start function of the MovingObject base class.
 			base.Start ();
@@ -50,6 +61,8 @@ namespace Completed
 		{
 			//When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
 			GameManager.instance.playerFoodPoints = food;
+
+            GameManager.instance.playerWaterPoints = water;
 		}
 		
 		
@@ -132,9 +145,13 @@ namespace Completed
 		{
 			//Every time player moves, subtract from food points total.
 			food--;
+
+            water--;
 			
 			//Update food text display to reflect current score.
 			foodText.text = "Food: " + food;
+
+            waterText.text = "Water:" + water;
 			
 			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
 			base.AttemptMove <T> (xDir, yDir);
@@ -193,7 +210,7 @@ namespace Completed
 				
 				//Update foodText to represent current total and notify player that they gained points
 				foodText.text = "+" + pointsPerFood + " Food: " + food;
-				
+
 				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
 				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
 				
@@ -205,10 +222,10 @@ namespace Completed
 			else if(other.tag == "Soda")
 			{
 				//Add pointsPerSoda to players food points total
-				food += pointsPerSoda;
+				water += pointsPerSoda;
 				
 				//Update foodText to represent current total and notify player that they gained points
-				foodText.text = "+" + pointsPerSoda + " Food: " + food;
+				waterText.text = "+" + pointsPerSoda + " Water: " + water;
 				
 				//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
 				SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
@@ -237,9 +254,13 @@ namespace Completed
 			
 			//Subtract lost food points from the players total.
 			food -= loss;
+
+            water -= loss;
 			
 			//Update the food display with the new total.
 			foodText.text = "-"+ loss + " Food: " + food;
+
+            waterText.text = "-" + loss + "Water:" + water;
 			
 			//Check to see if game has ended.
 			CheckIfGameOver ();
@@ -250,7 +271,7 @@ namespace Completed
 		private void CheckIfGameOver ()
 		{
 			//Check if food point total is less than or equal to zero.
-			if (food <= 0) 
+			if (food <= 0||water<=0) 
 			{
 				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
 				SoundManager.instance.PlaySingle (gameOverSound);

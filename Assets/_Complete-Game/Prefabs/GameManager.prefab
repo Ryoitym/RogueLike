@@ -44,6 +44,7 @@ MonoBehaviour:
   levelStartDelay: 2
   turnDelay: 0.1
   playerFoodPoints: 100
+  playerWaterPoints: 100
   playersTurn: 1
 --- !u!114 &11433658
 MonoBehaviour:
@@ -64,7 +65,11 @@ MonoBehaviour:
   foodCount:
     minimum: 1
     maximum: 5
+  waterCount:
+    minimum: 2
+    maximum: 5
   exit: {fileID: 110520, guid: cb0f3020bafec423aa31d0e491c4b811, type: 2}
+  master_Sword: {fileID: 110520, guid: c18e9692903814865aa9a855aaa66df5, type: 2}
   floorTiles:
   - {fileID: 106160, guid: 038998774947c4a8fa170d5b4492a7dd, type: 2}
   - {fileID: 137908, guid: 41775b29042354678bcd58bb1a75871e, type: 2}

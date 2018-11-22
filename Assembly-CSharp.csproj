@@ -57,6 +57,7 @@
      <Compile Include="Assets\_Complete-Game\Scripts\Enemy.cs" />
      <Compile Include="Assets\_Complete-Game\Scripts\GameManager.cs" />
      <Compile Include="Assets\_Complete-Game\Scripts\Loader.cs" />
+     <Compile Include="Assets\_Complete-Game\Scripts\MasterSword.cs" />
      <Compile Include="Assets\_Complete-Game\Scripts\MovingObject.cs" />
      <Compile Include="Assets\_Complete-Game\Scripts\Player.cs" />
      <Compile Include="Assets\_Complete-Game\Scripts\SoundManager.cs" />

@@ -68,8 +68,8 @@ namespace Completed
 		
 		private void Update ()
 		{
-			//If it's not the player's turn, exit the function.
-			if(!GameManager.instance.playersTurn) return;
+            //If it's not the player's turn, exit the function.
+            if (!GameManager.instance.playersTurn) return;
 			
 			int horizontal = 0;  	//Used to store the horizontal move direction.
 			int vertical = 0;		//Used to store the vertical move direction.
@@ -148,8 +148,6 @@ namespace Completed
 
             water--;
 
-            Debug.Log(food + "水" + water);
-			
 			//Update food text display to reflect current score.
 			foodText.text = "Food: " + food;
 
@@ -192,7 +190,7 @@ namespace Completed
 		
 		
 		//OnTriggerEnter2D is sent when another object enters a trigger collider attached to this object (2D physics only).
-		private void OnTriggerEnter2D (Collider2D other)
+		private void OnTriggerStay2D (Collider2D other)
 		{
 			//Check if the tag of the trigger collided with is Exit.
 			if(other.tag == "Exit")
@@ -219,6 +217,20 @@ namespace Completed
 				//Disable the food object the player collided with.
 				other.gameObject.SetActive (false);
 			}
+            else if(other.tag=="MasterSword")
+            {
+                Debug.Log("マスターソードがあります。");
+                               
+                //マスターソードを引っこ抜く
+                if (food>100&&Input.GetKeyDown(KeyCode.Space))
+                {
+                    Debug.Log("Space");
+
+                    Invoke("Restart", restartLevelDelay);
+
+                    enabled = false;
+                }
+            }
 			
 			//Check if the tag of the trigger collided with is Soda.
 			else if(other.tag == "Soda")
@@ -235,7 +247,7 @@ namespace Completed
 				//Disable the soda object the player collided with.
 				other.gameObject.SetActive (false);
 			}
-		}
+        }
 		
 		
 		//Restart reloads the scene when called.

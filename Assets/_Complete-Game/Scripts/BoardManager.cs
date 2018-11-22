@@ -34,6 +34,10 @@ namespace Completed
         //新規
         public Count waterCount = new Count(2, 5);
 		public GameObject exit;											//Prefab to spawn for exit.
+
+        //新規
+        public GameObject master_Sword;
+
 		public GameObject[] floorTiles;									//Array of floor prefabs.
 		public GameObject[] wallTiles;									//Array of wall prefabs.
 		public GameObject[] foodTiles;									//Array of food prefabs.
@@ -77,7 +81,7 @@ namespace Completed
 				for(int y = -1; y < rows + 1; y++)
 				{
 					//Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
-					GameObject toInstantiate = floorTiles[Random.Range (0,floorTiles.Length)];
+					GameObject toInstantiate = floorTiles[Random.Range (0,floorTiles.Length-1)];
 					
 					//Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
 					if(x == -1 || x == columns || y == -1 || y == rows)
@@ -89,6 +93,7 @@ namespace Completed
 					
 					//Set the parent of our newly instantiated object instance to boardHolder, this is just organizational to avoid cluttering hierarchy.
 					instance.transform.SetParent (boardHolder);
+
 				}
 			}
 		}
@@ -158,6 +163,8 @@ namespace Completed
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
 			Instantiate (exit, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
+
+            Instantiate(master_Sword, new Vector3(columns - 1, rows - 8, 0f), Quaternion.identity);
 		}
 	}
 }

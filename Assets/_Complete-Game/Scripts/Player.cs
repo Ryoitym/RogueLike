@@ -147,6 +147,8 @@ namespace Completed
 			food--;
 
             water--;
+
+            Debug.Log(food + "水" + water);
 			
 			//Update food text display to reflect current score.
 			foodText.text = "Food: " + food;

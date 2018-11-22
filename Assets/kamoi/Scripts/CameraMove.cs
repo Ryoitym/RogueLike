@@ -22,6 +22,7 @@ public class CameraMove : MonoBehaviour
 
     public Transform player;
     CameraPos currentPosition;
+    private bool isMoving = false;
 
     void Start()
     {
@@ -62,10 +63,12 @@ public class CameraMove : MonoBehaviour
     /// <param name="direction">指示する方向</param>
     void Move(Direction direction)
     {
+        if (isMoving) return;   //カメラ移動中は無視する
         switch (direction)
         {
             case Direction.Right:
-                transform.position += new Vector3(8, 0, 0);
+                //transform.position += new Vector3(8, 0, 0);
+                StartCoroutine(Scroll(new Vector3(8, 0, 0))); Debug.Log("Right");
                 if (currentPosition == CameraPos.UnderLeft)
                 {
                     currentPosition = CameraPos.UnderRight;
@@ -76,7 +79,9 @@ public class CameraMove : MonoBehaviour
                 }
                 break;
             case Direction.Up:
-                transform.position += new Vector3(0, 8, 0);
+                //transform.position += new Vector3(0, 8, 0);
+                StartCoroutine(Scroll(new Vector3(0, 8, 0))); Debug.Log("Up");
+
                 if (currentPosition == CameraPos.UnderLeft)
                 {
                     currentPosition = CameraPos.UpperLeft;
@@ -87,7 +92,8 @@ public class CameraMove : MonoBehaviour
                 }
                 break;
             case Direction.Left:
-                transform.position += new Vector3(-8, 0, 0);
+                //transform.position += new Vector3(-8, 0, 0);
+                StartCoroutine(Scroll(new Vector3(-8, 0, 0))); Debug.Log("Left");
                 if (currentPosition == CameraPos.UnderRight)
                 {
                     currentPosition = CameraPos.UnderLeft;
@@ -98,7 +104,8 @@ public class CameraMove : MonoBehaviour
                 }
                 break;
             case Direction.Down:
-                transform.position += new Vector3(0, -8, 0);
+                //transform.position += new Vector3(0, -8, 0);
+                StartCoroutine(Scroll(new Vector3(0, -8, 0))); Debug.Log("Down");
                 if (currentPosition == CameraPos.UpperLeft)
                 {
                     currentPosition = CameraPos.UnderLeft;
@@ -110,6 +117,41 @@ public class CameraMove : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    /// <summary>
+    /// スクロール用コルーチン
+    /// </summary>
+    /// <param name="totalMoveMent">総移動量</param>
+    /// <returns></returns>
+    IEnumerator Scroll(Vector3 totalMoveMent)
+    {
+        Vector3 firstPosition = transform.position;
+        Vector3 totalAbs = totalMoveMent;
+        if (totalAbs.x < 0 || totalAbs.y < 0)
+        {
+            totalAbs.x *= -1;
+            totalAbs.y *= -1;
+        }
+        isMoving = true;
+        //Vector3 endPosition = totalMoveMent + transform.position;
+        //Debug.Log("Init total" + totalMoveMent);
+        //Debug.Log("Init move" + move);
+        //Debug.Log("Init firstPos" + firstPosition);
+        //Debug.Log("Init endPos" + endPosition);
+
+        while (true)
+        {
+            transform.position += totalMoveMent * Time.deltaTime;
+            //Debug.Log("条件" + Mathf.Abs(transform.position.x - firstPosition.x)+":"+totalAbs.x);
+            if ((Mathf.Abs(transform.position.x - firstPosition.x) > totalAbs.x) || (Mathf.Abs(transform.position.y - firstPosition.y) > totalAbs.y))
+            {
+                //Debug.Log("コルーチン終了");
+                isMoving = false;
+                yield break;
+            }
+            yield return null;
         }
     }
 }

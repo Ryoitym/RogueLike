@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/kamoi/_Complete-Game_K.unity
+- path: Assets/kamoi/MasterMain.unity
   isLoaded: 1
   isActive: 1

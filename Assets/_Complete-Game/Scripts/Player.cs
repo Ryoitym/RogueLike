@@ -222,11 +222,11 @@ namespace Completed
                 Debug.Log("マスターソードがあります。");
                                
                 //マスターソードを引っこ抜く
-                if (food>100&&Input.GetKeyDown(KeyCode.Space))
+                if (food>0&&Input.GetKeyDown(KeyCode.Space))
                 {
                     Debug.Log("Space");
 
-                    Invoke("Restart", restartLevelDelay);
+                    Invoke("GameClearCheck", restartLevelDelay);
 
                     enabled = false;
                 }
@@ -297,6 +297,10 @@ namespace Completed
 				GameManager.instance.GameOver ();
 			}
 		}
+        private void GameClearCheck()
+        {
+            GameManager.instance.GameClear();
+        }
 	}
 }
 

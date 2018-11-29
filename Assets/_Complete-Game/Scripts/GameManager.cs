@@ -146,6 +146,15 @@ namespace Completed
 			//Disable this GameManager.
 			enabled = false;
 		}
+
+        public void GameClear()
+        {
+            levelText.text = "おめでとう！あなたはマスターソードを手に入れました！";
+
+            levelImage.SetActive(true);
+
+            enabled = false;
+        }
 		
 		//Coroutine to move enemies in sequence.
 		IEnumerator MoveEnemies()
